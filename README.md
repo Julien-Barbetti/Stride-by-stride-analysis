@@ -94,6 +94,40 @@ Scripts located in `src/visualisation/`:
 - **Decomposition:** NMF (Non-negative Matrix Factorization)  
 - **Clustering:** Hierarchical Agglomerative Clustering with a hard cycle-overlap constraint  
 
----
+## 6. FUNCTIONAL WORKFLOW
+
+```mermaid
+flowchart TD
+classDef data_dir fill:#f9f9f9,stroke:#333
+classDef results_dir fill:#fff4dd,stroke:#d4a017
+classDef script_dir fill:#e1f5fe,stroke:#01579b
+classDef visu_dir fill:#f3e5f5,stroke:#7b1fa2
+
+subgraph DATA [data_example/]
+A1[EMG]:::data_dir
+A2[Angle]:::data_dir
+A3[MoCap]:::data_dir
+A4[Vitesse]:::data_dir
+end
+
+A3 --> B[script/Stance_event.py]:::script_dir
+B --> B_out[results/Events]:::results_dir
+
+A4 --> C[script/Stride_type.py]:::script_dir
+B_out --> C
+C --> C_out[results/Running_style]:::results_dir
+
+A1 & A2 --> D[script/Process_cycle.py]:::script_dir
+B_out --> D
+D --> D_out[results/Cycles]:::results_dir
+
+D_out --> E[script/Synergy.py]:::script_dir
+E --> E_out[results/Synergies]:::results_dir
+
+E_out --> F[script/Clustering.py]:::script_dir
+F --> F_out[results/Clustering]:::results_dir
+
+F_out & E_out & D_out & B_out & C_out --> G[src/visualisation/]:::visu_dir
+```
 
 **END OF README**
